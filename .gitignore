@@ -7,7 +7,9 @@
 /knowledge_base/
 /logs/
 /scripts/
-/docs/
+/docs/*
+!/docs/
+!/docs/TECHNICAL_REPORT.md
 /ds/
 /.env.example
 
