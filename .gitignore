@@ -1,0 +1,54 @@
+# The runnable, publishable application is under demo/.
+# Keep the incomplete historical scaffold and design notes locally, out of this release.
+/backend/
+/frontend/
+/config/
+/docker/
+/knowledge_base/
+/logs/
+/scripts/
+/docs/
+/ds/
+/.env.example
+
+# Secrets and local environment files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python environments, caches, and test output
+**/.venv/
+**/venv/
+**/__pycache__/
+*.py[cod]
+**/.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Frontend dependencies and generated builds
+**/node_modules/
+**/dist/
+**/coverage/
+
+# Local databases and runtime output
+*.sqlite
+*.sqlite3
+*.db
+**/logs/
+
+# Nested repositories and version-control metadata
+**/.git/
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Redundant top-level env placeholder; the real template is demo/.env.example
+/.env.example
