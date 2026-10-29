@@ -1,0 +1,134 @@
+{
+  "suite": "shopmate-offline-agent-regression",
+  "version": 1,
+  "cases": [
+    {
+      "id": "order_logistics_lookup",
+      "messages": [
+        {
+          "input": "查询订单 DEMO20261017001 的物流",
+          "expect": {
+            "intent_in": ["order_query", "logistics"],
+            "route": "orders",
+            "contains": "已发货",
+            "citation_category": "logistics",
+            "order_no": "DEMO20261017001",
+            "order_status": "shipped",
+            "required_steps": ["order_lookup"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "product_stock_lookup",
+      "messages": [
+        {
+          "input": "SKU-PHONE-001 有库存吗？",
+          "expect": {
+            "intent_in": ["product_consult"],
+            "route": "product",
+            "contains": "库存 24",
+            "citation_category": "product",
+            "required_steps": ["product_lookup"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "after_sales_policy_retrieval",
+      "messages": [
+        {
+          "input": "这个商品不合适，可以退吗？",
+          "expect": {
+            "intent_in": ["refund_return"],
+            "route": "knowledge+orders",
+            "contains": "请补充订单号",
+            "citation_category": "after_sales",
+            "required_steps": ["policy_retrieval"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "complaint_human_handoff",
+      "messages": [
+        {
+          "input": "我要投诉，转人工客服",
+          "expect": {
+            "intent_in": ["human_agent", "complaint"],
+            "route": "human",
+            "contains": "转人工",
+            "citation_category": "human",
+            "required_steps": ["human_handoff_gate"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cancel_requires_confirmation",
+      "messages": [
+        {
+          "input": "取消订单 DEMO20261017002",
+          "expect": {
+            "intent_in": ["refund_return"],
+            "route": "knowledge+orders",
+            "contains": "不会直接执行",
+            "action_status": "pending",
+            "order_no": "DEMO20261017002",
+            "order_status": "paid",
+            "confirm_action": true,
+            "confirmed_action_status": "confirmed",
+            "confirmed_order_status": "cancel_requested"
+          }
+        }
+      ]
+    },
+    {
+      "id": "multi_turn_context_followup",
+      "messages": [
+        {
+          "input": "商品不合适，可以退吗？",
+          "expect": {
+            "intent_in": ["refund_return"],
+            "route": "knowledge+orders"
+          }
+        },
+        {
+          "input": "那订单已经发货了呢？",
+          "expect": {
+            "intent_in": ["order_query"],
+            "route": "orders",
+            "contains": "请提供订单号",
+            "required_steps": ["order_lookup"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "unknown_intent_fallback",
+      "messages": [
+        {
+          "input": "你好，今天聊点别的",
+          "expect": {
+            "intent_in": ["other"],
+            "route": "knowledge"
+          }
+        }
+      ]
+    },
+    {
+      "id": "promotion_knowledge_retrieval",
+      "messages": [
+        {
+          "input": "现在有什么优惠券吗？",
+          "expect": {
+            "intent_in": ["promotion"],
+            "route": "knowledge",
+            "citation_category": "promotion",
+            "required_steps": ["hybrid_retrieval"]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -105,8 +105,27 @@ npm run build
 
 ## Documentation
 
-- [详细技术报告](docs/TECHNICAL_REPORT.md)：传统客服对比、技术选型原因、Agent 技术清单、请求流程、接口、边界和学习路线。
+- [详细技术报告](docs/TECHNICAL_REPORT.md)：技术选型、Agent 组件边界、流程、验证和 Demo 边界。
+- [Agent 求职工程路线图](docs/AGENT_ENGINEERING_ROADMAP.md)：把参考岗位能力映射到本项目，区分已实现、未实现和下一步计划，并提供真实可用的项目表述。
+- [Agent 行为评测指南](docs/EVALUATION_GUIDE.md)：介绍离线回归案例、运行命令、断言维度和评测边界。
 - [Demo 运行说明](demo/README.md)
+
+## Agent 行为评测
+
+在 `demo/backend` 执行：
+
+```bash
+uv sync --extra test
+uv run python -m demo_service.evaluation --min-pass-rate 1.0
+```
+
+评测以本地规则、模板和 SQLite 演示数据离线运行，覆盖 8 个合成对话场景；它不是线上准确率或真实模型效果指标。GitHub Actions 会自动运行后端测试、离线评测、前端测试和生产构建。
+
+## 面向 AI Agent 开发岗位的项目说明
+
+这个项目可以展示 Agent 控制流、工具/检索边界、Human-in-the-loop、Trace 和离线回归评测。项目简介、面试讲解和后续路线见 [Agent 求职工程路线图](docs/AGENT_ENGINEERING_ROADMAP.md)。
+
+**简历表述边界：**这是独立学习用的本地 Demo；目前没有真实 CRM、WhatsApp、MCP 协议、持久化分布式 Run、Langfuse、真实订单/支付系统或线上客户数据。不要把路线图中的规划写成已经落地的生产经验。
 
 ## License
 

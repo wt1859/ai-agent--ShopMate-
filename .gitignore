@@ -10,6 +10,10 @@
 /docs/*
 !/docs/
 !/docs/TECHNICAL_REPORT.md
+!/docs/AGENT_ENGINEERING_ROADMAP.md
+!/docs/EVALUATION_GUIDE.md
+/eval-results/
+/demo/backend/eval-results/
 /ds/
 /.env.example
 

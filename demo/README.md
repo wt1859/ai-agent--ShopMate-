@@ -31,14 +31,17 @@ uv run uvicorn app:app --app-dir . --host 127.0.0.1 --port 8765
 - 健康检查：<http://localhost:8765/health>
 - Demo 状态：<http://localhost:8765/api/demo/status>
 
-## 测试
+## 测试与 Agent Eval
 
 后端（从 `demo/backend` 运行）：
 
 ```bash
 uv sync --extra test
 uv run pytest tests -q
+uv run python -m demo_service.evaluation --min-pass-rate 1.0
 ```
+
+离线评测集在 `backend/evals/cases.json`，当前覆盖 8 个合成对话场景，断言意图、路由、引用、执行步骤及取消操作确认前后的状态。它不会调用远端模型；评测说明见 [评测说明](../docs/EVALUATION_GUIDE.md)。
 
 前端（从 `demo/frontend` 运行）：
 

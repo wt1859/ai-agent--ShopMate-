@@ -210,6 +210,7 @@ RRF 排名融合
 | uv | Python 依赖和锁文件管理 | 已实现 |
 | SQLite | 本地 Demo 数据持久化 | 已实现 |
 | pytest | 后端单元/API 测试 | 已实现 |
+| 本地 Agent Eval runner | 运行版本化合成对话集，输出维度和案例结果 | 已实现；固定离线模式 |
 
 ### 4.3 Agent 编排层
 
@@ -320,7 +321,9 @@ other             其他或无法判断
 - 请求参数校验和 HTTP 错误响应；
 - 业务步骤状态 `ok` / `fallback`；
 - trace 中的耗时、路由和步骤；
-- 测试覆盖核心离线路径。
+- 后端单元/API 测试覆盖核心离线路径；
+- 版本化离线 Agent Eval 覆盖意图、路由、检索引用、Trace 和高风险操作状态；
+- GitHub Actions 自动运行后端测试、离线 Eval、前端测试和构建。
 
 生产还需要：
 
@@ -330,7 +333,17 @@ other             其他或无法判断
 - 告警；
 - 模型版本和 Prompt 版本管理；
 - 线上反馈闭环；
-- 回归评测集和灰度发布。
+- 真实模型/语义评测集、Langfuse/OpenTelemetry 等外部 Trace 和灰度发布。
+
+### 4.10 Agent 行为评测与回归
+
+- 案例文件：`demo/backend/evals/cases.json`，8 个合成场景、9 条用户输入。
+- 检查维度：意图、路由、回复关键事实、知识引用类别、风险操作状态、Trace 步骤。
+- 高风险案例检查取消申请确认前订单仍是 `paid`，确认后只变成演示状态 `cancel_requested`。
+- 评测 runner 在每个场景使用隔离 SQLite 数据库，并清空可选 JEV/LLM API Key 环境变量；不发起远端模型请求。
+- 当前结果属于确定性行为回归，不是线上准确率或真实模型泛化评估。
+- GitHub Actions 命令：`uv run python -m demo_service.evaluation --min-pass-rate 1.0`。
+- 评测结构、案例扩展和边界说明见 `docs/EVALUATION_GUIDE.md`；面向 AI Agent 求职的能力映射见 `docs/AGENT_ENGINEERING_ROADMAP.md`。
 
 ## 5. 一次请求的完整执行过程
 
@@ -386,25 +399,25 @@ other             其他或无法判断
 
 ## 7. 当前版本的量化计数
 
-本节统计的是加入 MIT License 和本技术报告后的发布候选版本。统计范围是 Git 中实际纳入发布的文件，不包含 `.gitignore` 排除的依赖、缓存、数据库和构建产物。
+本节统计的是本轮 Agent Eval、CI 和求职路线文档加入后的发布候选版本。统计范围是 Git 中实际纳入发布的 41 个文件，不包含 `.gitignore` 排除的依赖、缓存、数据库、生成报告和本地 Harness 专题文档。
 
 ### 7.1 仓库文件统计
 
 | 指标 | 数量 |
 |---|---:|
-| 发布文件 | 35 个 |
-| 发布文件总大小 | 442,082 bytes，约 432 KiB |
-| 可读文本总行数 | 6,435 行 |
-| 代码与配置文件 | 27 个 |
-| 代码与配置行数 | 4,820 行 |
-| Python 文件 | 6 个，1,083 行 |
+| 发布文件 | 41 个 |
+| 发布文件总大小 | 513,236 bytes，约 501 KiB |
+| 可读文本总行数 | 7,903 行 |
+| 运行代码与配置文本文件（不含 Markdown 和无扩展名文件） | 33 个，6,773 行 |
+| Python 文件 | 8 个，2,003 行 |
 | Vue 文件 | 6 个，864 行 |
 | TypeScript 文件 | 6 个，381 行 |
 | CSS 文件 | 1 个，82 行 |
-| JSON/锁文件 | 6 个，3,169 行 |
-| Markdown 文件 | 3 个，688 行 |
+| JSON/锁文件 | 7 个，3,303 行 |
+| YAML 工作流 | 1 个，52 行 |
+| Markdown 文件 | 5 个，1,046 行 |
 
-这里的“代码与配置行数”包括后端、前端、测试、配置和启动脚本；它不是有效代码行数，也没有把空行、注释和锁文件当成业务复杂度指标。
+这里的“运行代码与配置行数”按扩展名统计，包含后端、前端、测试、评测数据、依赖锁文件和 CI 工作流；它是文件原始行数，不是有效代码行数，也不代表系统质量。
 
 ### 7.2 Agent 能力计数
 
@@ -412,9 +425,11 @@ other             其他或无法判断
 |---|---:|
 | FastAPI 路由声明 | 17 个，包含前端 SPA 回退入口 |
 | SQLite 业务表 | 7 张：sessions、messages、knowledge、orders、products、actions、traces |
-| 后端测试函数 | 11 个：API 6 个，Engine 5 个 |
+| 后端测试函数 | 33 个：API 6 个，Engine 5 个，Eval runner 22 个 |
 | 前端测试用例 | 4 个：验收 1 个，工作台 3 个 |
-| 已验证测试总数 | 15 个 |
+| 后端/前端测试函数总数 | 37 个 |
+| 离线 Agent Eval 场景 | 8 个，9 条用户输入 |
+| 离线 Agent Eval 确定性断言 | 45 项，按意图、路由、回复、检索、安全和 Trace 分类 |
 | 主要意图类别 | 9 类：商品、订单、物流、退款/退货、支付、售后、投诉、人工、促销；另有 other 回退 |
 | 短期上下文窗口 | 最近 8 条消息 |
 | 知识域 | 6 个：after_sales、logistics、payment、product、promotion、human |
@@ -427,8 +442,9 @@ other             其他或无法判断
 
 当前已实际运行并通过：
 
-- 后端：`11 passed`，另有 1 条第三方 Starlette/httpx 弃用警告，不影响通过；
+- 后端：`30 passed, 3 skipped`；三个网络边界直测（`sendmsg`、面向 Socket 的 OS `write`、`os.sendfile`）在当前 Windows 环境不可用，已跳过；CI 工作流目标为 Ubuntu，但其远端运行结果须在推送后另行核验；另有 1 条第三方 Starlette/httpx 弃用警告，不影响通过；
 - 前端：`4 passed`；
+- 离线 Agent Eval：`8/8` 场景通过，45 项确定性断言全部通过；
 - 前端构建：`vite build` 通过；
 - 密钥扫描：发布候选文件未发现常见 OpenAI、GitHub、AWS 或私钥格式；
 - 发布内容检查：未包含 `node_modules`、Python `.venv`、前端 `dist`、SQLite 数据库和旧的未完成骨架；
@@ -443,6 +459,7 @@ git ls-files
 # 后端测试
 cd demo/backend
 uv run pytest tests -q
+uv run python -m demo_service.evaluation --min-pass-rate 1.0
 
 # 前端测试和构建
 cd ../frontend
@@ -466,7 +483,7 @@ npm run build
 | 人工 | 路由记录 | 坐席系统、工单、SLA 和接管 |
 | 监控 | trace 和基础统计 | 日志、指标、告警和分布式追踪 |
 | 部署 | Windows 本地启动 | 容器、CI/CD、密钥管理、灰度和高可用 |
-| 评测 | 单元/API/UI 测试 | 意图集、RAG 评测、工具成功率、人工反馈 |
+| 评测 | 8 个离线确定性行为案例及单元/API/UI 测试 | 真实模型评测、RAG 指标、工具成功率和人工反馈 |
 
 ## 9. 推荐的学习顺序
 
