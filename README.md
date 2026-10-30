@@ -1,18 +1,21 @@
-# ShopMate AI
+# ShopMate AI | 电商客服 Agent Runtime
 
-**ShopMate AI** 是一个用于学习电商智能客服 Agent 架构的本地 Demo。它把一条客服请求拆成意图判断、流程路由、知识检索或业务工具调用，再生成回复并记录执行轨迹，方便观察 Agent 每一步做了什么。
+**把客服对话变成一条可观察、可评测、受控执行的 Agent 工作流。**
 
-> **当前可运行版本在 [`demo/`](demo/)。** 本地原始目录中的 `backend/`、`frontend/`、`config/`、`docker/`、`docs/` 等，是尚未补全的早期项目骨架或参考资料，不属于可运行应用，本次 GitHub 发布只包含 `demo/` 和项目说明。
+ShopMate AI 是一个面向 AI Agent 开发求职展示的全栈工程 Demo。它演示 Agent 如何从用户消息中识别意图、选择业务路线、检索带来源的知识、调用订单/商品工具，并在取消或退款等高风险操作前等待用户确认。每轮执行都会留下 Trace；配套离线评测集用合成对话检查路由、回复、引用、安全状态和执行步骤。
 
-## 这个项目能做什么
+当前版本基于 Vue 3、TypeScript、FastAPI 和 SQLite，可在本地离线运行。重点不是堆一个聊天页面，而是把 Agent 的控制流、工具边界、安全门和回归验证做成可以运行、阅读和测试的代码。
 
-- 在客服工作台中创建会话并发送消息。
-- 识别物流、订单、商品、售后和人工服务等常见意图。
-- 根据意图选择知识库检索或演示业务工具。
-- 查看回复引用、工具结果和 Harness 执行轨迹。
-- 管理演示知识条目，查看订单和商品样例。
-- 对退款/取消订单请求执行确认流程，观察高风险操作的安全边界。
-- 默认离线运行；可选配置 JEV 兼容接口和 OpenAI-compatible 聊天/Embedding 接口用于学习。
+> **可运行 Demo 位于 [`demo/`](demo/)。** 仓库中早期的 `backend/`、`frontend/`、`config/`、`docker/` 等骨架目录尚未补全，不属于这个可运行版本。订单、商品和知识数据为本地演示数据，不连接真实电商服务。
+
+## 工程亮点
+
+- **显式 Agent 控制流**：把意图识别、业务路由、检索/工具调用、风险确认、回复和 Trace 串成可读的执行链，而不是只返回一段聊天文本。
+- **知识与业务事实分开**：政策类问题走混合检索并展示引用；订单、商品和库存问题读取 SQLite 演示数据，避免把实时业务事实交给模型猜。
+- **高风险操作有确认门**：取消/退款先创建 `pending` 操作，用户确认后才改变本地演示状态；测试覆盖确认前后状态。
+- **行为可回归**：包含 8 个合成对话场景、45 项确定性断言，覆盖意图、路由、回复、检索、安全与 Trace；评测失败会返回非零状态，供 CI 使用。
+- **完整全栈闭环**：Vue 3 + TypeScript 工作台、FastAPI 服务、SQLite 数据、后端/前端测试和 GitHub Actions 工作流。
+- **Provider 可替换但不冒充已接入**：默认使用本地规则、模板和字符 TF-IDF 检索代理；仓库保留可选接口用于学习，真实模型效果需要用户自行配置并验证。
 
 ## 架构概览
 
@@ -133,4 +136,4 @@ uv run python -m demo_service.evaluation --min-pass-rate 1.0
 
 ---
 
-**English summary:** ShopMate AI is a locally runnable educational e-commerce customer-service agent demo. It shows intent routing, a lightweight Harness runtime, hybrid knowledge retrieval, mock business tools, confirmations for risky actions, and execution traces. The runnable app is in `demo/`; it uses sample data and is not production-ready.
+**English summary:** ShopMate AI is a full-stack e-commerce Agent Runtime demo for learning and portfolio use. It turns customer messages into observable workflows covering intent routing, cited knowledge retrieval, SQLite-backed demo tools, human confirmation for risky actions, and execution traces. Its offline regression suite includes 8 synthetic conversations and 45 deterministic checks. The app runs locally; it does not connect to production CRM, commerce, payment, or logistics systems.

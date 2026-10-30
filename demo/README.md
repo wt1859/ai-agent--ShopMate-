@@ -1,6 +1,8 @@
-# ShopMate AI Demo
+# ShopMate AI | E-commerce Agent Runtime Demo
 
-用于学习电商智能客服 Agent 架构的本地 Demo。当前可运行应用由 Vue 3 + TypeScript 前端和 FastAPI 后端组成，默认使用本地规则、模板回复、混合检索代理和 SQLite 演示数据。
+一个可以本地运行的全栈电商客服 Agent 工程 Demo。它将用户消息编排为意图判断、业务路由、知识检索或 SQLite 演示工具调用，并记录 Trace；取消/退款请求先进入待确认状态。配套离线评测包含 8 个合成对话场景和 45 项确定性断言。
+
+技术栈：Vue 3 + TypeScript、FastAPI、SQLite。默认使用本地规则、模板回复和字符 TF-IDF 检索代理，不依赖外部模型服务。
 
 > 这是学习/演示项目，不连接真实订单、支付或物流系统。退款和取消操作经确认后也只更新本地演示数据库。
 
