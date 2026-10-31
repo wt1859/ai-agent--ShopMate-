@@ -343,7 +343,7 @@ other             其他或无法判断
 - 评测 runner 在每个场景使用隔离 SQLite 数据库，并清空可选 JEV/LLM API Key 环境变量；不发起远端模型请求。
 - 当前结果属于确定性行为回归，不是线上准确率或真实模型泛化评估。
 - GitHub Actions 命令：`uv run python -m demo_service.evaluation --min-pass-rate 1.0`。
-- 评测结构、案例扩展和边界说明见 `docs/EVALUATION_GUIDE.md`；面向 AI Agent 求职的能力映射见 `docs/AGENT_ENGINEERING_ROADMAP.md`。
+- 评测结构、案例扩展和边界说明见 `docs/EVALUATION_GUIDE.md`。
 
 ## 5. 一次请求的完整执行过程
 
@@ -399,7 +399,7 @@ other             其他或无法判断
 
 ## 7. 当前版本的量化计数
 
-本节统计的是本轮 Agent Eval、CI 和求职路线文档加入后的发布候选版本。统计范围是 Git 中实际纳入发布的 41 个文件，不包含 `.gitignore` 排除的依赖、缓存、数据库、生成报告和本地 Harness 专题文档。
+本节统计的是本轮 Agent Eval、CI 和文档更新后的发布候选版本。统计范围是 Git 中实际纳入发布的 40 个文件，不包含 `.gitignore` 排除的依赖、缓存、数据库、生成报告和本地 Harness 专题文档。
 
 ### 7.1 仓库文件统计
 

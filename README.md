@@ -4,7 +4,7 @@
 
 ## 项目简介
 
-ShopMate AI 是一个面向 AI Agent 工程实践和求职展示的全栈作品集 Demo。项目没有把所有请求简单交给聊天模型，而是围绕电商客服中的真实问题类型，设计了一套从用户消息进入、意图判断、业务路由、知识检索、结构化工具调用、风险确认、回复组装到执行轨迹持久化的完整处理链路。
+ShopMate AI 是一个面向 AI Agent 工程实践的全栈 Demo。项目没有把所有请求简单交给聊天模型，而是围绕电商客服中的真实问题类型，设计了一套从用户消息进入、意图判断、业务路由、知识检索、结构化工具调用、风险确认、回复组装到执行轨迹持久化的完整处理链路。
 
 系统重点覆盖订单查询、物流进度、商品咨询、库存确认、售后政策、退款/取消申请、投诉和人工转接等场景。订单、商品、库存和物流等业务事实由本地 SQLite 演示数据与受控业务工具提供；售后、促销等政策问题由带来源的知识检索提供证据；短期对话上下文由会话管理维护；Mem0 仅作为可选的用户长期偏好记忆，不承担订单或交易事实存储。
 
@@ -12,7 +12,7 @@ ShopMate AI 是一个面向 AI Agent 工程实践和求职展示的全栈作品�
 
 ### 项目基本信息
 
-- **项目类型：**独立开发 / AI Agent 工程作品集项目
+- **项目类型：**独立开发 / AI Agent 全栈 Demo
 - **项目角色：**AI Agent 工程实现、后端与前端全栈开发
 - **核心技术：**Python、FastAPI、SQLite、Vue 3、TypeScript、Vite、Mem0、pytest、Vitest、uv
 - **运行方式：**本地启动，默认不依赖外部 LLM、Embedding、Mem0 或有效认证
@@ -149,7 +149,6 @@ npm run build
 ## Documentation
 
 - [详细技术报告](docs/TECHNICAL_REPORT.md)：技术选型、Agent 组件边界、流程、验证和 Demo 边界。
-- [Agent 求职工程路线图](docs/AGENT_ENGINEERING_ROADMAP.md)：把参考岗位能力映射到本项目，区分已实现、未实现和下一步计划，并提供真实可用的项目表述。
 - [Agent 行为评测指南](docs/EVALUATION_GUIDE.md)：介绍离线回归案例、运行命令、断言维度和评测边界。
 - [Demo 运行说明](demo/README.md)
 
@@ -170,4 +169,4 @@ uv run python -m demo_service.evaluation --min-pass-rate 1.0
 
 ---
 
-**English summary:** ShopMate AI is a full-stack e-commerce Agent Runtime demo for learning and portfolio use. It turns customer messages into observable workflows covering intent routing, cited knowledge retrieval, SQLite-backed demo tools, human confirmation for risky actions, and execution traces. Its offline regression suite includes 8 synthetic conversations and 45 deterministic checks. The app runs locally; it does not connect to production CRM, commerce, payment, or logistics systems.
+**English summary:** ShopMate AI is a full-stack e-commerce Agent Runtime demo for learning and engineering practice. It turns customer messages into observable workflows covering intent routing, cited knowledge retrieval, SQLite-backed demo tools, human confirmation for risky actions, and execution traces. Its offline regression suite includes 8 synthetic conversations and 45 deterministic checks. The app runs locally; it does not connect to production CRM, commerce, payment, or logistics systems.
